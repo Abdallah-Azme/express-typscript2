@@ -10,7 +10,10 @@ import {
   deleteSessionHandler,
   getUserSessionHandler,
 } from "./controllers/session.controller";
-import { createUserHandler } from "./controllers/user.controller";
+import {
+  createUserHandler,
+  getCurrentUserHandler,
+} from "./controllers/user.controller";
 import { requireUser } from "./middlewares/requireUser";
 import validate from "./middlewares/validateResource";
 import {
@@ -26,8 +29,9 @@ function routes(app: Express) {
   app.get("healthpeak", (req: Request, res: Response) => {
     res.status(200).send("The app is working correctly");
   });
-
+  // user
   app.post("/api/users", validate(createUserSchema), createUserHandler);
+  app.get("/api/me", requireUser, getCurrentUserHandler);
 
   //sessions
   app.post(
